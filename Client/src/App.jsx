@@ -14,6 +14,7 @@ import Analytics from './page/Analytics'
 import Settings from './page/Settings'
 import Profile from './page/Profile'
 import Upload from './page/Upload'
+import History from './page/History'
 
 function App() {
 
@@ -106,6 +107,15 @@ function App() {
           element={
             <PrivateRoute>
               <Upload />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/history"
+          element={
+            <PrivateRoute>
+              <History />
             </PrivateRoute>
           }
         />

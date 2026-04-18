@@ -1,10 +1,11 @@
 import React from "react";
-import { LayoutDashboard, Users, Send, BarChart3, Settings, User } from "lucide-react";
+import { LayoutDashboard, Users, Send, BarChart3, Settings, User, History } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const menu = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
     {name: "Upload", path: "/upload", icon: Send},
+    { name: "History", path: "/history", icon: History },
     { name: "Contacts", path: "/contacts", icon: Users },
     { name: "Campaigns", path: "/campaigns", icon: Send },
     { name: "Analytics", path: "/analytics", icon: BarChart3 },

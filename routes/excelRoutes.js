@@ -6,7 +6,6 @@ import { getMyImportedUsers, getSingleImportedUser, uploadExcel } from "../contr
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
-
 // 🔒 Protected route (optional)
 router.post("/upload-excel", protect, upload.single("file"), uploadExcel);
 
