@@ -13,6 +13,7 @@ export const uploadExcel = async (req, res) => {
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
     const data = XLSX.utils.sheet_to_json(sheet);
+    console.log(data)
 
     if (!data.length) {
       return res.status(400).json({ message: "Empty file" });
@@ -22,7 +23,7 @@ export const uploadExcel = async (req, res) => {
     const users = data
       .map((item) => ({
         name: item.name || item.Name,
-        mobile: String(item.mobile || item.Mobile),
+        mobile: Number(item.mobile || item.Phone),
         sourceFile: req.file.originalname,
         uploadedBy: req.user?._id,
       }))
@@ -54,7 +55,7 @@ export const uploadExcel = async (req, res) => {
 
 export const getMyImportedUsers = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user?._id;
 
     const users = await ImportUser.find({ uploadedBy: userId })
       .sort({ createdAt: -1 });
