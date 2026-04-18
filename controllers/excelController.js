@@ -49,3 +49,44 @@ export const uploadExcel = async (req, res) => {
     });
   }
 };
+
+// controllers/excelController.js
+
+export const getMyImportedUsers = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    const users = await ImportUser.find({ uploadedBy: userId })
+      .sort({ createdAt: -1 });
+
+    res.json({
+      total: users.length,
+      users,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch users",
+      error: error.message,
+    });
+  }
+};
+
+export const getSingleImportedUser = async (req, res) => {
+  try {
+    const user = await ImportUser.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching user",
+      error: error.message,
+    });
+  }
+};
+

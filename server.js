@@ -5,6 +5,9 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import excelRoutes from "./routes/excelRoutes.js";
+import dns from "dns";
+dns.setServers(["1.1.1.1","8.8.8.8"]);
+
 
 dotenv.config();
 connectDB();
