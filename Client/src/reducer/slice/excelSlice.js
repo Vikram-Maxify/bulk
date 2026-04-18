@@ -27,43 +27,73 @@ export const uploadExcelFile = createAsyncThunk(
   }
 );
 
-// 🔥 Slice
+export const getMyUsers = createAsyncThunk(
+  "excel/getMyUsers",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        "http://localhost:5000/api/excel/my-users",
+        {
+          withCredentials: true, // agar cookie auth hai
+        }
+      );
+
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+
 const excelSlice = createSlice({
   name: "excel",
   initialState: {
     loading: false,
     success: false,
     error: null,
-    data: null,
+    users: [],     // ✅ FIX
+    total: 0,
   },
   reducers: {
     resetExcelState: (state) => {
       state.loading = false;
       state.success = false;
       state.error = null;
-      state.data = null;
+      state.users = [];
+      state.total = 0;
     },
   },
   extraReducers: (builder) => {
     builder
-      // 🔄 loading
+      // UPLOAD
       .addCase(uploadExcelFile.pending, (state) => {
         state.loading = true;
         state.success = false;
-        state.error = null;
       })
-
-      // ✅ success
       .addCase(uploadExcelFile.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
-        state.data = action.payload;
       })
-
-      // ❌ error
       .addCase(uploadExcelFile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload?.message || "Upload failed";
+      })
+
+      // GET USERS
+      .addCase(getMyUsers.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getMyUsers.fulfilled, (state, action) => {
+        state.loading = false;
+
+        // ✅ HANDLE BOTH CASES
+        state.users = action.payload.users || action.payload.data || [];
+        state.total = action.payload.total || 0;
+      })
+      .addCase(getMyUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload?.message || "Failed";
       });
   },
 });
