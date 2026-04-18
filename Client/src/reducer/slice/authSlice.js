@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // 🌐 Base URL
-const API = "http://localhost:5000/api/users";
+const API = "http://localhost:5000/api/auth";
 
 // 📝 REGISTER
 export const registerUser = createAsyncThunk(
@@ -51,11 +51,11 @@ export const logoutUser = createAsyncThunk(
 const authSlice = createSlice({
     name: "auth",
     initialState: {
-        user: null,
-        loading: false,
-        error: null,
-        success: false,
-    },
+    user: JSON.parse(localStorage.getItem("user")) || null,
+    loading: false,
+    error: null,
+    success: false,
+},
     reducers: {
         resetState: (state) => {
             state.loading = false;
@@ -85,7 +85,8 @@ const authSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
-                state.user = action.payload.user;
+                state.user = action.payload.user || action.payload;
+                localStorage.setItem("user", JSON.stringify(state.user)); // optional but recommended
                 state.success = true;
             })
             .addCase(loginUser.rejected, (state, action) => {
