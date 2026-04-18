@@ -26,5 +26,5 @@ app.use("/api/auth", authRoutes);
 app.use("/api/excel", excelRoutes);
 
 app.listen(process.env.PORT, () => {
-  console.log("Server running...");
+  console.log(`Server running...${process.env.PORT}`);
 });

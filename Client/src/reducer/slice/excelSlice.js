@@ -30,8 +30,8 @@ export const getMyUsers = createAsyncThunk(
   "excel/getMyUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/excel/my-users",
+      const res = await api.get(
+        "/excel/my-users",
         {
           withCredentials: true, // agar cookie auth hai
         }
