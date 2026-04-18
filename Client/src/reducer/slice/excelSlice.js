@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import api from "../../services/api";
 
 // 🔥 Async thunk (API call)
 export const uploadExcelFile = createAsyncThunk(
@@ -9,14 +9,13 @@ export const uploadExcelFile = createAsyncThunk(
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await axios.post(
-        "http://localhost:5000/api/excel/upload-excel",
+      const res = await api.post(
+        "/excel/upload-excel",
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          withCredentials: true, // agar auth use kar raha hai
         }
       );
 

@@ -1,17 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
-// 🌐 Base URL
-const API = "http://localhost:5000/api/auth";
+import api from "../../services/api";
 
 // 📝 REGISTER
 export const registerUser = createAsyncThunk(
     "auth/register",
     async (userData, thunkAPI) => {
         try {
-            const res = await axios.post(`${API}/register`, userData, {
-                withCredentials: true,
-            });
+            const res = await api.post("/auth/register", userData);
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.data.message);
@@ -24,9 +19,7 @@ export const loginUser = createAsyncThunk(
     "auth/login",
     async (userData, thunkAPI) => {
         try {
-            const res = await axios.post(`${API}/login`, userData, {
-                withCredentials: true,
-            });
+            const res = await api.post("/auth/login", userData);
             return res.data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.data.message);
@@ -39,7 +32,7 @@ export const logoutUser = createAsyncThunk(
     "auth/logout",
     async (_, thunkAPI) => {
         try {
-            await axios.post(`${API}/logout`, {}, { withCredentials: true });
+            await api.post("/auth/logout", {});
             return true;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.response.data.message);
