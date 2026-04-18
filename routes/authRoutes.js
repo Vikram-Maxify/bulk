@@ -2,7 +2,8 @@ import express from "express";
 import {
   registerUser,
   loginUser,
-  logoutUser
+  logoutUser,
+  updateProfile
 } from "../controllers/authController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -15,5 +16,7 @@ router.post("/logout", logoutUser);
 router.get("/profile", protect, (req, res) => {
   res.json(req.user);
 });
+
+router.put("/profile", protect, updateProfile);
 
 export default router;

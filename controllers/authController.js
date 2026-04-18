@@ -96,3 +96,46 @@ export const logoutUser = (req, res) => {
 
   res.json({ message: "Logged out" });
 };
+
+
+// 👤 UPDATE PROFILE
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user._id; // from auth middleware
+    const { name, email, mobile } = req.body;
+
+    // Validation
+    if (!name || !email || !mobile) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    // Check if email or mobile is already in use by another user
+    const existingUser = await User.findOne({
+      $or: [{ email }, { mobile }],
+      _id: { $ne: userId },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ message: "Email or mobile already in use" });
+    }
+
+    // Update user
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { name, email, mobile },
+      { new: true }
+    ).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      user,
+      message: "Profile updated successfully",
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
