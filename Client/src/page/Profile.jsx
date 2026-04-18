@@ -4,7 +4,7 @@ import { User, Mail, Phone, Shield, Zap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../Layouts/DashboardLayout";
 import { logoutUser } from "../reducer/slice/authSlice";
-import axios from "axios";
+import api from "../services/api";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -35,11 +35,7 @@ const Profile = () => {
 
     setLoading(true);
     try {
-      const res = await axios.put(
-        "http://localhost:5000/api/auth/profile",
-        formData,
-        { withCredentials: true }
-      );
+      const res = await api.put("/auth/profile", formData);
       
       if (res.data.user) {
         localStorage.setItem("user", JSON.stringify(res.data.user));
