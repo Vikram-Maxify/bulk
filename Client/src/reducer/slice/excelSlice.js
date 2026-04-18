@@ -10,7 +10,7 @@ export const uploadExcelFile = createAsyncThunk(
       formData.append("file", file);
 
       const res = await axios.post(
-        "http://localhost:5000/api/upload-excel",
+        "http://localhost:5000/api/excel/upload-excel",
         formData,
         {
           headers: {
